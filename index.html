@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Betterflyuu Clean Motion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@200;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body, html { 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            background-color: transparent; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* WADAH PUSAT (TANPA GARIS/FRAME) */
+        .text-center-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 800px; /* Area lebar biar teks gak kepotong */
+            height: 300px;
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        /* --- LOGIKA PERGERAKAN TEKS --- */
+        .step {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.7) translateY(30px);
+            filter: blur(15px);
+            white-space: nowrap;
+        }
+
+        /* Saat Muncul */
+        .step.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
+
+        /* Saat Keluar */
+        .step.exit {
+            opacity: 0;
+            transform: scale(1.3) translateY(-30px);
+            filter: blur(20px);
+        }
+
+        /* --- STYLE TYPOGRAPHY --- */
+        .welcome-style {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 4rem;
+            color: white;
+            letter-spacing: 20px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        .sub-style {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+        }
+
+        .name-style {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 6.5rem;
+            /* Gradient Emas Hogwarts Tetap Dipertahankan karena Mewah */
+            background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 50%, #fbf5b7 55%, #aa771c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 25px rgba(191, 149, 63, 0.5));
+        }
+
+        /* Efek Melayang Halus */
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-center-wrapper">
+        <div class="step welcome-style" id="step1">Welcome</div>
+        <div class="step sub-style" id="step2">to My Live</div>
+        <div class="step name-style" id="step3">Betterflyuu</div>
+    </div>
+
+    <script>
+        const steps = [
+            { id: 'step1', duration: 2000 }, // Welcome (2 detik)
+            { id: 'step2', duration: 2000 }, // to My Live (2 detik)
+            { id: 'step3', duration: 8000 }  // Betterflyuu (8 DETIK)
+        ];
+
+        let currentStep = 0;
+
+        function runMotion() {
+            const currentElement = document.getElementById(steps[currentStep].id);
+            
+            // Masuk
+            currentElement.classList.remove('exit');
+            currentElement.classList.add('active');
+
+            // Tunggu durasi
+            setTimeout(() => {
+                // Keluar
+                currentElement.classList.remove('active');
+                currentElement.classList.add('exit');
+
+                // Lanjut ke kata berikutnya
+                currentStep = (currentStep + 1) % steps.length;
+
+                // Jeda transisi antar kata
+                setTimeout(runMotion, 900); 
+            }, steps[currentStep].duration);
+        }
+
+        window.onload = runMotion;
+    </script>
+</body>
+</html>
