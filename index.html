@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Hogwarts Standalone Motion Frame</title>
+    <style>
+        /* FONT PERSIS SEPERTI GAMBAR */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Myeongjo:wght@400;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- BINGKAI MEWAH ALA GAMBAR (TANPA SERVER) --- */
+        .premium-frame {
+            position: relative;
+            width: 800px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* Background gelap kaca blur persis di gambar */
+            background: rgba(15, 20, 25, 0.85);
+            backdrop-filter: blur(10px);
+            
+            /* Border luar */
+            border: 2px solid #5a7a68; /* Warna silver kehijauan netral */
+            border-radius: 8px;
+            
+            /* Box shadow ini nanti warnanya diganti otomatis via JS ngikutin asrama */
+            box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.5);
+            animation: floating 5s ease-in-out infinite;
+        }
+
+        /* Border dalam (Efek garis ganda biar elegan) */
+        .premium-frame::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        /* --- WADAH TEKS DI DALAM BINGKAI --- */
+        .text-container {
+            position: absolute;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9) translateY(15px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            filter: blur(10px);
+        }
+
+        .text-container.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
+
+        .text-container.exit {
+            opacity: 0;
+            transform: scale(1.1) translateY(-15px);
+            filter: blur(10px);
+        }
+
+        /* --- STYLE TYPOGRAPHY --- */
+        .main-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 5.5rem;
+            letter-spacing: 5px;
+            margin-bottom: 5px;
+            
+            /* Kunci Gradasi Mengalir */
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 3s linear infinite;
+        }
+
+        /* Sub-teks (Sebagai ganti "Level 2 - Epic" di gambar) */
+        .sub-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.2rem;
+            color: #e2d9c2;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* --- WARNA GRADASI TIAP ASRAMA --- */
+        .gryff {
+            background-image: linear-gradient(to right, #c0392b, #f1c40f, #e74c3c, #f1c40f, #c0392b);
+            filter: drop-shadow(0 0 15px rgba(231, 76, 60, 0.5));
+        }
+        .slyth {
+            background-image: linear-gradient(to right, #1e824c, #ecf0f1, #2ecc71, #ecf0f1, #1e824c);
+            filter: drop-shadow(0 0 15px rgba(46, 204, 113, 0.5));
+        }
+        .raven {
+            background-image: linear-gradient(to right, #2980b9, #ecf0f1, #3498db, #ecf0f1, #2980b9);
+            filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.5));
+        }
+        .huff {
+            background-image: linear-gradient(to right, #e67e22, #ffffff, #f1c40f, #ffffff, #e67e22);
+            filter: drop-shadow(0 0 15px rgba(241, 196, 15, 0.5));
+        }
+        .better {
+            background-image: linear-gradient(to right, #b38728, #fcf6ba, #bf953f, #fbf5b7, #b38728);
+            filter: drop-shadow(0 0 20px rgba(191, 149, 63, 0.6));
+            font-size: 6.5rem; /* Betterflyuu dibikin lebih gede dikit */
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="premium-frame" id="frame-box">
+        
+        <div class="text-container" id="step1">
+            <div class="main-title gryff">GRYFFINDOR</div>
+            <div class="sub-title">The House of Courage</div>
+        </div>
+        
+        <div class="text-container" id="step2">
+            <div class="main-title slyth">SLYTHERIN</div>
+            <div class="sub-title">The House of Ambition</div>
+        </div>
+
+        <div class="text-container" id="step3">
+            <div class="main-title raven">RAVENCLAW</div>
+            <div class="sub-title">The House of Wisdom</div>
+        </div>
+
+        <div class="text-container" id="step4">
+            <div class="main-title huff">HUFFLEPUFF</div>
+            <div class="sub-title">The House of Loyalty</div>
+        </div>
+
+        <div class="text-container" id="step5">
+            <div class="main-title better">BETTERFLYUU</div>
+            <div class="sub-title">Welcome to My Live</div>
+        </div>
+
+    </div>
+
+    <script>
+        // LOGIKA MURNI BROWSER (NO SERVER.JS)
+        const steps = [
+            // Tambahin setting warna glow buat nyocokin bingkai sama asrama
+            { id: 'step1', duration: 2500, color: 'rgba(231, 76, 60, 0.3)' }, 
+            { id: 'step2', duration: 2500, color: 'rgba(46, 204, 113, 0.3)' }, 
+            { id: 'step3', duration: 2500, color: 'rgba(52, 152, 219, 0.3)' }, 
+            { id: 'step4', duration: 2500, color: 'rgba(241, 196, 15, 0.3)' }, 
+            { id: 'step5', duration: 8000, color: 'rgba(191, 149, 63, 0.4)' }  
+        ];
+
+        let currentStep = 0;
+        const frameBox = document.getElementById('frame-box');
+
+        function runMotion() {
+            const currentData = steps[currentStep];
+            const currentElement = document.getElementById(currentData.id);
+            
+            // Sihir JavaScript: Ubah warna glow bingkai ngikutin warna asrama yang lagi muncul!
+            frameBox.style.boxShadow = `0 0 30px rgba(0,0,0,0.8), inset 0 0 40px ${currentData.color}`;
+
+            currentElement.classList.remove('exit');
+            currentElement.classList.add('active');
+
+            setTimeout(() => {
+                currentElement.classList.remove('active');
+                currentElement.classList.add('exit');
+
+                currentStep = (currentStep + 1) % steps.length;
+                setTimeout(runMotion, 800); 
+            }, currentData.duration);
+        }
+
+        window.onload = runMotion;
+    </script>
+</body>
+</html>
