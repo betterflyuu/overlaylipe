@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Betterflyuu - Roblox Edition Frame</title>
+    <style>
+        /* FONT PERSIS SEPERTI REQUEST-MU */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Myeongjo:wght@400;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: transparent; /* MURNI TRANSPARAN TOTAL */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- WADAH UTAMA KESELURUHAN --- */
+        .master-container {
+            position: relative;
+            width: 1000px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: floating 5s ease-in-out infinite;
+        }
+
+        /* --- BINGKAI SVG (MURNI GARIS UKIRAN) --- */
+        .svg-frame {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1; 
+            transition: filter 0.8s ease; 
+        }
+
+        .svg-stroke {
+            stroke-dasharray: 3000;
+            stroke-dashoffset: 3000;
+            animation: drawFrame 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* --- WADAH TEKS DI DALAM BINGKAI --- */
+        .text-wrapper {
+            position: relative;
+            z-index: 10; 
+            width: 100%; height: 100%;
+        }
+
+        /* Logika Transisi Teks */
+        .text-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            filter: blur(10px);
+            width: 100%;
+        }
+
+        .text-container.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            filter: blur(0);
+        }
+
+        .text-container.exit {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.1) translateY(-15px);
+            filter: blur(10px);
+        }
+
+        /* --- STYLE TYPOGRAPHY --- */
+        .main-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 5.5rem;
+            letter-spacing: 5px;
+            margin-bottom: 5px;
+            
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 3s linear infinite;
+        }
+
+        .sub-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.2rem;
+            color: #e2d9c2;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); 
+        }
+
+        /* --- WARNA GRADASI GENRE ROBLOX --- */
+        
+        /* 1. HORROR (Merah Darah & Hitam) */
+        .genre-horror {
+            background-image: linear-gradient(to right, #8a0303, #ff4c4c, #ff0000, #ff4c4c, #8a0303);
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.6));
+        }
+        
+        /* 2. ROLEPLAY (Ungu Neon & Pink) */
+        .genre-rp {
+            background-image: linear-gradient(to right, #8e44ad, #ff7ef8, #9b59b6, #ff7ef8, #8e44ad);
+            filter: drop-shadow(0 0 15px rgba(155, 89, 182, 0.6));
+        }
+        
+        /* 3. ADVENTURE (Biru Elektrik & Cyan) */
+        .genre-adv {
+            background-image: linear-gradient(to right, #2980b9, #00ffff, #3498db, #00ffff, #2980b9);
+            filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.6));
+        }
+        
+        /* 4. HANG OUT (Hijau Mint & Putih) */
+        .genre-hangout {
+            background-image: linear-gradient(to right, #1abc9c, #ffffff, #2ecc71, #ffffff, #1abc9c);
+            filter: drop-shadow(0 0 15px rgba(26, 188, 156, 0.6));
+        }
+
+        /* 5. BETTERFLYUU (Emas Mewah Tetap) */
+        .better {
+            background-image: linear-gradient(to right, #b38728, #fcf6ba, #bf953f, #fbf5b7, #b38728);
+            filter: drop-shadow(0 0 20px rgba(191, 149, 63, 0.6));
+            font-size: 6.5rem; 
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes drawFrame {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="master-container">
+        
+        <svg class="svg-frame" id="magic-frame" viewBox="0 0 1000 280" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#b38728" />
+                    <stop offset="25%" stop-color="#fcf6ba" />
+                    <stop offset="50%" stop-color="#bf953f" />
+                    <stop offset="75%" stop-color="#fbf5b7" />
+                    <stop offset="100%" stop-color="#b38728" />
+                </linearGradient>
+            </defs>
+            
+            <g fill="none" stroke="url(#goldGradient)" stroke-width="2.5" class="svg-stroke">
+                <rect x="25" y="25" width="950" height="230" rx="4" />
+                <rect x="35" y="35" width="930" height="210" rx="2" stroke-width="1" stroke-opacity="0.6"/>
+                
+                <path d="M 25 75 C 55 75 75 55 75 25" />
+                <circle cx="75" cy="75" r="4" fill="url(#goldGradient)" stroke="none"/>
+                
+                <path d="M 975 75 C 945 75 925 55 925 25" />
+                <circle cx="925" cy="75" r="4" fill="url(#goldGradient)" stroke="none"/>
+                
+                <path d="M 25 205 C 55 205 75 225 75 255" />
+                <circle cx="75" cy="205" r="4" fill="url(#goldGradient)" stroke="none"/>
+                
+                <path d="M 975 205 C 945 205 925 225 925 255" />
+                <circle cx="925" cy="205" r="4" fill="url(#goldGradient)" stroke="none"/>
+            </g>
+        </svg>
+
+        <div class="text-wrapper">
+            
+            <div class="text-container" id="step1">
+                <div class="main-title genre-horror">HORROR</div>
+                <div class="sub-title">Face Your Deepest Fears</div>
+            </div>
+            
+            <div class="text-container" id="step2">
+                <div class="main-title genre-rp">ROLEPLAY</div>
+                <div class="sub-title">Create Your Own Story</div>
+            </div>
+
+            <div class="text-container" id="step3">
+                <div class="main-title genre-adv">ADVENTURE</div>
+                <div class="sub-title">Explore the Unknown</div>
+            </div>
+
+            <div class="text-container" id="step4">
+                <div class="main-title genre-hangout">HANG OUT</div>
+                <div class="sub-title">Chill and Vibe with Us</div>
+            </div>
+
+            <div class="text-container" id="step5">
+                <div class="main-title better">BETTERFLYUU</div>
+                <div class="sub-title">Welcome to My Live</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const steps = [
+            { id: 'step1', duration: 2500, color: 'rgba(255, 0, 0, 0.6)' },       // Merah Darah
+            { id: 'step2', duration: 2500, color: 'rgba(155, 89, 182, 0.6)' },   // Ungu Neon
+            { id: 'step3', duration: 2500, color: 'rgba(52, 152, 219, 0.6)' },    // Biru Elektrik
+            { id: 'step4', duration: 2500, color: 'rgba(26, 188, 156, 0.6)' },    // Hijau Mint
+            { id: 'step5', duration: 8000, color: 'rgba(191, 149, 63, 0.8)' }     // Emas Mewah
+        ];
+
+        let currentStep = 0;
+        const magicFrame = document.getElementById('magic-frame');
+
+        function runMotion() {
+            const currentData = steps[currentStep];
+            const currentElement = document.getElementById(currentData.id);
+            
+            // Mengubah glow bingkai ngikutin warna genrenya
+            magicFrame.style.filter = `drop-shadow(0 0 15px ${currentData.color})`;
+
+            currentElement.classList.remove('exit');
+            currentElement.classList.add('active');
+
+            setTimeout(() => {
+                currentElement.classList.remove('active');
+                currentElement.classList.add('exit');
+
+                currentStep = (currentStep + 1) % steps.length;
+                setTimeout(runMotion, 800); 
+            }, currentData.duration);
+        }
+
+        window.onload = runMotion;
+    </script>
+</body>
+</html>
