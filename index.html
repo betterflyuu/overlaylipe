@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Betterflyuu Hogwarts Houses Motion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@400;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html { 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            background-color: transparent; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .text-center-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 1200px; 
+            height: 300px;
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        /* --- LOGIKA PERGERAKAN TEKS --- */
+        .step {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Transisi sedikit dipercepat */
+            transform: scale(0.8) translateY(20px);
+            filter: blur(15px);
+            white-space: nowrap;
+        }
+
+        .step.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
+
+        .step.exit {
+            opacity: 0;
+            transform: scale(1.2) translateY(-20px);
+            filter: blur(15px);
+        }
+
+        /* --- BASE STYLE UNTUK ASRAMA --- */
+        .house-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3.2rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        /* 1. GRYFFINDOR (Merah & Emas) */
+        .gryffindor {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #f1c40f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(231, 76, 60, 0.6)); 
+        }
+
+        /* 2. SLYTHERIN (Hijau & Perak) */
+        .slytherin {
+            background: linear-gradient(135deg, #1e824c 0%, #2ecc71 50%, #ecf0f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(46, 204, 113, 0.6)); 
+        }
+
+        /* 3. RAVENCLAW (Biru & Perak) */
+        .ravenclaw {
+            background: linear-gradient(135deg, #2980b9 0%, #3498db 50%, #ecf0f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(52, 152, 219, 0.6)); 
+        }
+
+        /* 4. HUFFLEPUFF (Kuning Emas & Putih) */
+        .hufflepuff {
+            background: linear-gradient(135deg, #e67e22 0%, #f1c40f 50%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(241, 196, 15, 0.6)); 
+        }
+
+        /* --- 5. STYLE NAMA UTAMA --- */
+        .name-style {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 6.5rem;
+            background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 50%, #fbf5b7 55%, #aa771c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 25px rgba(191, 149, 63, 0.5));
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-center-wrapper">
+        <div class="step house-text gryffindor" id="step1">Tim Gryffindor...</div>
+        <div class="step house-text slytherin" id="step2">...Slytherin...</div>
+        <div class="step house-text ravenclaw" id="step3">...Ravenclaw...</div>
+        <div class="step house-text hufflepuff" id="step4">...atau Hufflepuff?</div>
+        <div class="step name-style" id="step5">Betterflyuu</div>
+    </div>
+
+    <script>
+        // Durasi diset agak cepat (1.8 detik) buat asrama biar penonton nggak keburu bosan
+        const steps = [
+            { id: 'step1', duration: 1800 }, 
+            { id: 'step2', duration: 1800 }, 
+            { id: 'step3', duration: 1800 }, 
+            { id: 'step4', duration: 2200 }, // Dikasih sedikit waktu lebih pas nanya "atau Hufflepuff?"
+            { id: 'step5', duration: 8000 }  // Namamu tetap 8 detik!
+        ];
+
+        let currentStep = 0;
+
+        function runMotion() {
+            const currentElement = document.getElementById(steps[currentStep].id);
+            
+            currentElement.classList.remove('exit');
+            currentElement.classList.add('active');
+
+            setTimeout(() => {
+                currentElement.classList.remove('active');
+                currentElement.classList.add('exit');
+
+                currentStep = (currentStep + 1) % steps.length;
+
+                // Jeda antar teks dipercepat dikit biar pergantian asramanya 'nendang'
+                setTimeout(runMotion, 600); 
+            }, steps[currentStep].duration);
+        }
+
+        window.onload = runMotion;
+    </script>
+</body>
+</html>
