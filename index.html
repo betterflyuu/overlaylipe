@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Betterflyuu - Open Jasa Map Roblox</title>
+    <style>
+        /* FONT IMPORT */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Nanum+Myeongjo:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: transparent; /* TRANSPARAN TOTAL */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- PEMBUNGKUS LAYOUT UTAMA --- */
+        .layout-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px; /* Jarak antara bingkai dan running text */
+        }
+
+        /* --- WADAH BINGKAI ATAS --- */
+        .master-container {
+            position: relative;
+            width: 1000px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: floating 5s ease-in-out infinite;
+        }
+
+        /* --- BINGKAI SVG --- */
+        .svg-frame {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1; 
+            transition: filter 0.8s ease; 
+        }
+
+        .svg-stroke {
+            stroke-dasharray: 3000;
+            stroke-dashoffset: 3000;
+            animation: drawFrame 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* --- WADAH TEKS --- */
+        .text-wrapper {
+            position: relative;
+            z-index: 10; 
+            width: 100%; height: 100%;
+        }
+
+        .text-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            filter: blur(10px);
+            width: 100%;
+        }
+
+        .text-container.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            filter: blur(0);
+        }
+
+        .text-container.exit {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.1) translateY(-15px);
+            filter: blur(10px);
+        }
+
+        /* --- TYPOGRAPHY BINGKAI --- */
+        .main-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 5rem;
+            letter-spacing: 5px;
+            margin-bottom: 5px;
+            
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 3s linear infinite;
+        }
+
+        .sub-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.2rem;
+            color: #e2d9c2;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); 
+        }
+
+        /* --- WARNA GRADASI ETALASE JASA --- */
+        .genre-jasa { background-image: linear-gradient(to right, #f1c40f, #f39c12, #e67e22, #f39c12, #f1c40f); filter: drop-shadow(0 0 15px rgba(241, 196, 15, 0.6)); }
+        .genre-hangout { background-image: linear-gradient(to right, #1abc9c, #ffffff, #2ecc71, #ffffff, #1abc9c); filter: drop-shadow(0 0 15px rgba(26, 188, 156, 0.6)); }
+        .genre-club { background-image: linear-gradient(to right, #ff007f, #ff7ef8, #8e44ad, #ff7ef8, #ff007f); filter: drop-shadow(0 0 15px rgba(255, 0, 127, 0.6)); }
+        .genre-gunung { background-image: linear-gradient(to right, #27ae60, #2ecc71, #16a085, #2ecc71, #27ae60); filter: drop-shadow(0 0 15px rgba(39, 174, 96, 0.6)); }
+        .genre-system { background-image: linear-gradient(to right, #00d2ff, #3a7bd5, #00d2ff, #3a7bd5, #00d2ff); filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.6)); }
+        
+        .better {
+            background-image: linear-gradient(to right, #b38728, #fcf6ba, #bf953f, #fbf5b7, #b38728);
+            filter: drop-shadow(0 0 20px rgba(191, 149, 63, 0.6));
+            font-size: 6rem; 
+        }
+
+        /* --- RUNNING TEXT (MARQUEE) JUALAN --- */
+        .marquee-box {
+            width: 900px; /* Sedikit lebih kecil dari bingkai biar proporsional */
+            background: linear-gradient(90deg, transparent, rgba(15, 20, 25, 0.8), transparent);
+            border-top: 1px solid rgba(191, 149, 63, 0.5);
+            border-bottom: 1px solid rgba(191, 149, 63, 0.5);
+            padding: 12px 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .marquee-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fbf5b7;
+            white-space: nowrap;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(191, 149, 63, 0.8);
+            /* Animasi jalan ke kiri */
+            animation: jalanTerus 18s linear infinite;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes drawFrame { to { stroke-dashoffset: 0; } }
+        @keyframes gradientFlow { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes jalanTerus { 
+            0% { transform: translateX(900px); } 
+            100% { transform: translateX(-100%); } 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout-wrapper">
+        
+        <div class="master-container">
+            <svg class="svg-frame" id="magic-frame" viewBox="0 0 1000 280" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#b38728" />
+                        <stop offset="25%" stop-color="#fcf6ba" />
+                        <stop offset="50%" stop-color="#bf953f" />
+                        <stop offset="75%" stop-color="#fbf5b7" />
+                        <stop offset="100%" stop-color="#b38728" />
+                    </linearGradient>
+                </defs>
+                <g fill="none" stroke="url(#goldGradient)" stroke-width="2.5" class="svg-stroke">
+                    <rect x="25" y="25" width="950" height="230" rx="4" />
+                    <rect x="35" y="35" width="930" height="210" rx="2" stroke-width="1" stroke-opacity="0.6"/>
+                    <path d="M 25 75 C 55 75 75 55 75 25" /> <circle cx="75" cy="75" r="4" fill="url(#goldGradient)" stroke="none"/>
+                    <path d="M 975 75 C 945 75 925 55 925 25" /> <circle cx="925" cy="75" r="4" fill="url(#goldGradient)" stroke="none"/>
+                    <path d="M 25 205 C 55 205 75 225 75 255" /> <circle cx="75" cy="205" r="4" fill="url(#goldGradient)" stroke="none"/>
+                    <path d="M 975 205 C 945 205 925 225 925 255" /> <circle cx="925" cy="205" r="4" fill="url(#goldGradient)" stroke="none"/>
+                </g>
+            </svg>
+
+            <div class="text-wrapper">
+                <div class="text-container" id="step1">
+                    <div class="main-title genre-jasa">OPEN JASA MAP</div>
+                    <div class="sub-title">Roblox Studio Developer</div>
+                </div>
+                <div class="text-container" id="step2">
+                    <div class="main-title genre-hangout">HANGOUT</div>
+                    <div class="sub-title">Tempat Nongkrong & Vibe</div>
+                </div>
+                <div class="text-container" id="step3">
+                    <div class="main-title genre-club">CLUB MAP</div>
+                    <div class="sub-title">Lighting & DJ Set Ready</div>
+                </div>
+                <div class="text-container" id="step4">
+                    <div class="main-title genre-gunung">GUNUNG</div>
+                    <div class="sub-title">Alam & Petualangan Misteri</div>
+                </div>
+                <div class="text-container" id="step5">
+                    <div class="main-title genre-system">SYSTEM CUSTOM</div>
+                    <div class="sub-title">Scripting & Mekanik Sesuai Request</div>
+                </div>
+                <div class="text-container" id="step6">
+                    <div class="main-title better">BETTERFLYUU</div>
+                    <div class="sub-title">Welcome to My Live</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="marquee-box">
+            <div class="marquee-text">
+                ✨ OPEN JASA PEMBUATAN MAP ROBLOX ✨ &nbsp;&nbsp; | &nbsp;&nbsp; 📥 TANYA-TANYA / MINAT LANGSUNG DM AJA 📥 &nbsp;&nbsp; | &nbsp;&nbsp; 🔥 READY 1 MAP CLUB TEMA JAWA PARTY MURAH AJA 🔥 &nbsp;&nbsp; | &nbsp;&nbsp; ⚙️ BISA BIKIN SYSTEM CUSTOM SESUAI REQUEST ⚙️
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Total ada 6 Langkah Sekarang
+        const steps = [
+            { id: 'step1', duration: 2500, color: 'rgba(241, 196, 15, 0.6)' },   // Gold (Jasa)
+            { id: 'step2', duration: 2500, color: 'rgba(26, 188, 156, 0.6)' },    // Mint (Hangout)
+            { id: 'step3', duration: 2500, color: 'rgba(255, 0, 127, 0.6)' },     // Pink (Club)
+            { id: 'step4', duration: 2500, color: 'rgba(39, 174, 96, 0.6)' },     // Green (Gunung)
+            { id: 'step5', duration: 2500, color: 'rgba(0, 210, 255, 0.6)' },     // Cyan (System Custom)
+            { id: 'step6', duration: 8000, color: 'rgba(191, 149, 63, 0.8)' }     // Emas Mewah (Betterflyuu)
+        ];
+
+        let currentStep = 0;
+        const magicFrame = document.getElementById('magic-frame');
+
+        function runMotion() {
+            const currentData = steps[currentStep];
+            const currentElement = document.getElementById(currentData.id);
+            
+            // Ubah glow bingkai mengikuti layanan yang sedang tampil
+            magicFrame.style.filter = `drop-shadow(0 0 15px ${currentData.color})`;
+
+            currentElement.classList.remove('exit');
+            currentElement.classList.add('active');
+
+            setTimeout(() => {
+                currentElement.classList.remove('active');
+                currentElement.classList.add('exit');
+
+                currentStep = (currentStep + 1) % steps.length;
+                setTimeout(runMotion, 800); 
+            }, currentData.duration);
+        }
+
+        window.onload = runMotion;
+    </script>
+</body>
+</html>
